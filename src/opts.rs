@@ -2,6 +2,7 @@
 
 use std::ffi::CString;
 use std::ptr;
+use libc::c_int;
 
 use crate::string_array::StringArray;
 use crate::util::Binding;
@@ -192,6 +193,33 @@ pub unsafe fn set_verify_owner_validation(enabled: bool) -> Result<(), Error> {
     // This function cannot actually fail, but the function has an error return
     // for other options that can.
     debug_assert!(error >= 0);
+    Ok(())
+}
+
+/// Set server connect timeout in milliseconds
+pub unsafe fn set_server_connect_timeout_in_milliseconds(timeout: c_int) -> Result<(), Error> {
+    let error = raw::git_libgit2_opts(
+        raw::GIT_OPT_SET_SERVER_CONNECT_TIMEOUT as libc::c_int,
+        timeout as libc::c_int
+    );
+    // This function cannot actually fail, but the function has an error return
+    // for other options that can.
+    debug_assert!(error >= 0);
+
+    Ok(())
+}
+
+/// Set server timeout in milliseconds
+pub unsafe fn set_server_timeout_in_milliseconds(timeout: c_int) -> Result<(), Error>
+{
+    let error = raw::git_libgit2_opts(
+        raw::GIT_OPT_SET_SERVER_TIMEOUT as libc::c_int,
+        timeout as libc::c_int
+    );
+    // This function cannot actually fail, but the function has an error return
+    // for other options that can.
+    debug_assert!(error >= 0);
+
     Ok(())
 }
 
